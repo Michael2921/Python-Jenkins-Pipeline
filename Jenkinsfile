@@ -12,7 +12,7 @@ pipeline {
     stages {
 
 
-
+//
 //        stage('Select ECR image') {
 //
 //            steps{
@@ -36,20 +36,21 @@ pipeline {
 
 
 
+
         stage('Select ECR image') {
 
             steps{
                 script {
                 echo 'Selecting ECR image'
-                def doStuff = input(
-                    message: 'Enter your custom value',
+                env.DEPLOY_ENV = input(
+                    message: 'Select target environment',
                     ok: 'Confirm',
                     parameters: [
-                        string(name: 'USER_INPUT', defaultValue: '', description: 'Please type the value you want to use:')
+                        choice(name: 'ENV', choices: ['Dev', 'Staging', 'Prod'], description: 'Where to deploy?')
                     ]
                 )
 
-                echo "The chosen environment is: ${doStuff}"
+              //  echo "The chosen environment is: ${doStuff}"
 
                 }
             }
@@ -59,10 +60,13 @@ pipeline {
 
 
 
+
+
         stage('Deploying image to EC2 instance') {
             steps {
                 script {
                         echo 'Deploying the application to EC2'
+                        sh "python3 ./python-jenkins-pipeline.py"
                 }
             }
         }
