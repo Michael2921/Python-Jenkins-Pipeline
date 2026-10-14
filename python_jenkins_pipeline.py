@@ -9,9 +9,9 @@ ecr_client = boto3.client('ecr', region_name="us-east-1")
 repositories = ecr_client.describe_repositories()
 
 
-for repo in repositories['repositories']:
-    repoName = repo['repositoryName']
-    print(f"Repo name {repo['repositoryName']} has repo Arn {repo['repositoryArn']}")
+# for repo in repositories['repositories']:
+#     repoName = repo['repositoryName']
+#     print(f"Repo name {repo['repositoryName']} has repo Arn {repo['repositoryArn']}")
 
 
 
