@@ -12,45 +12,28 @@ pipeline {
     stages {
 
 
-//
-//        stage('Select ECR image') {
-//
-//            steps{
-//                script {
-//                echo 'Selecting ECR image'
-//                def doStuff = input(
-//                    message: 'Select target environment',
-//                    ok: 'Confirm',
-//                    parameters: [
-//                        choice(name: 'ENV', choices: ['Dev', 'Staging', 'Prod'], description: 'Where to deploy?')
-//                    ]
-//                )
-//
-//                echo "The chosen environment is: ${doStuff}"
-//
-//                }
-//            }
-//
-//
-//        }
-
-
-
 
         stage('Select ECR image') {
 
             steps{
                 script {
+                def output = sh(script: "python3 -c 'import python-jenkins-pipeline; print(\"\\n\".join(python-jenkins-pipeline.get_images()))'", // .join converts python list to a string with a newline between each string
+                returnStdout: true
+                ).trim()
+
+
+                def imageChoices = output.readLines() # converts string to list
+
+
                 echo 'Selecting ECR image'
-                env.DEPLOY_ENV = input(
-                    message: 'Select target environment',
+                env.CHOICE_ENV = input(
+                    message: 'Select image to deploy',
                     ok: 'Confirm',
                     parameters: [
-                        choice(name: 'ENV', choices: ['Dev', 'Staging', 'Prod'], description: 'Where to deploy?')
+                        choice(name: 'Images', choices: imageChoices, description: 'What to deploy?')
                     ]
                 )
 
-              //  echo "The chosen environment is: ${doStuff}"
 
                 }
             }
@@ -61,14 +44,18 @@ pipeline {
 
 
 
-
-        stage('Deploying image to EC2 instance') {
-            steps {
-                script {
-                        echo 'Deploying the application to EC2'
-                        sh "python3 ./python-jenkins-pipeline.py"
-                }
-            }
-        }
+//        stage('Deploying image to EC2 instance') {
+//            environment {
+//                AWS_ACCESS_KEY_ID = credentials('jenkins_aws_access_key_id')
+//                AWS_SECRET_ACCESS_KEY = credentials('jenkins_aws_secret_access_key')
+//            }
+//            steps {
+//                script {
+//                        echo 'Deploying the application to EC2'
+//                        sh "python3 ./python-jenkins-pipeline.py"
+//                }
+//            }
+//        }
     }
 }
+
