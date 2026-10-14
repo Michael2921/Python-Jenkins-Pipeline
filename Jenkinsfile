@@ -26,7 +26,7 @@ pipeline {
               //  sh '. .venv/bin/activate' // activates virutal environment
                 sh '.venv/bin/python3 -m pip install -r requirements.txt'
                 def output = sh(
-                script: ".venv/bin/python3 -c 'import python_jenkins_pipeline; print(\"\\n\".join(python-jenkins-pipeline.get_images()))'", // .join converts python list to a string with a newline between each string
+                script: ".venv/bin/python3 -c 'import python_jenkins_pipeline; print(\"\\n\".join(python_jenkins_pipeline.get_images()))'", // .join converts python list to a string with a newline between each string
                 returnStdout: true
                 ).trim()
 
