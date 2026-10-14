@@ -18,7 +18,7 @@ pipeline {
             steps{
                 script {
                 def output = sh(
-                script: "python3 -c 'import python-jenkins-pipeline; print(\"\\n\".join(python-jenkins-pipeline.get_images()))'", // .join converts python list to a string with a newline between each string
+                script: "python3 -c 'import python_jenkins_pipeline; print(\"\\n\".join(python-jenkins-pipeline.get_images()))'", // .join converts python list to a string with a newline between each string
                 returnStdout: true
                 ).trim()
 
@@ -53,7 +53,7 @@ pipeline {
 //            steps {
 //                script {
 //                        echo 'Deploying the application to EC2'
-//                        sh "python3 ./python-jenkins-pipeline.py"
+//                        sh "python3 ./python_jenkins_pipeline.py"
 //                }
 //            }
 //        }
