@@ -17,6 +17,7 @@ pipeline {
 
             steps{
                 script {
+                sh 'pip install -r requirements.txt'
                 def output = sh(
                 script: "python3 -c 'import python_jenkins_pipeline; print(\"\\n\".join(python-jenkins-pipeline.get_images()))'", // .join converts python list to a string with a newline between each string
                 returnStdout: true
