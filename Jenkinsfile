@@ -21,7 +21,7 @@ pipeline {
                 def doStuff = input(
                     message: 'Select target environment',
                     ok: 'Confirm',
-                    paramaters: [
+                    parameters: [
                         choice(name: 'ENV', choices: ['Dev', 'Staging', 'Prod'], description: 'Where to deploy?')
                     ]
                 )
