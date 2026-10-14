@@ -4,7 +4,7 @@ import paramiko
 import subprocess
 
 
-ecr_client = boto3.client('ecr')
+ecr_client = boto3.client('ecr', region_name="us-east-1")
 
 repositories = ecr_client.describe_repositories()
 
