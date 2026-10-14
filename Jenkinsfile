@@ -17,11 +17,11 @@ pipeline {
 
             steps{
                 script {
-                sh 'python3 -m venv .venv' // creates virtual environment
-                sh '. .venv/bin/activate' // activates virutal environment
-                sh 'python3 -m pip install -r requirements.txt'
+                sh 'python3 -m venv .venv && . .venv/bin/activate' // creates virtual environment
+              //  sh '. .venv/bin/activate' // activates virutal environment
+                sh '.venv/bin/python3 -m pip install -r requirements.txt'
                 def output = sh(
-                script: "python3 -c 'import python_jenkins_pipeline; print(\"\\n\".join(python-jenkins-pipeline.get_images()))'", // .join converts python list to a string with a newline between each string
+                script: ".venv/bin/python3 -c 'import python_jenkins_pipeline; print(\"\\n\".join(python-jenkins-pipeline.get_images()))'", // .join converts python list to a string with a newline between each string
                 returnStdout: true
                 ).trim()
 
