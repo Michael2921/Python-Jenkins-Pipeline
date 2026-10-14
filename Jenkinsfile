@@ -17,7 +17,8 @@ pipeline {
 
             steps{
                 script {
-                def output = sh(script: "python3 -c 'import python-jenkins-pipeline; print(\"\\n\".join(python-jenkins-pipeline.get_images()))'", // .join converts python list to a string with a newline between each string
+                def output = sh(
+                script: "python3 -c 'import python-jenkins-pipeline; print(\"\\n\".join(python-jenkins-pipeline.get_images()))'", // .join converts python list to a string with a newline between each string
                 returnStdout: true
                 ).trim()
 
