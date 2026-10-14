@@ -18,6 +18,15 @@ pipeline {
             steps{
                 script {
                 echo 'Selecting ECR image'
+                def doStuff = input(
+                    message: 'Select target environment',
+                    ok: 'Confirm',
+                    paramaters: [
+                        choice(name: 'ENV', choices: ['Dev', 'Staging', 'Prod'], description: 'Where to deploy?')
+                    ]
+                )
+
+                echo "The chosen environment is: ${doStuff}"
 
                 }
             }
