@@ -13,16 +13,39 @@ pipeline {
 
 
 
+//        stage('Select ECR image') {
+//
+//            steps{
+//                script {
+//                echo 'Selecting ECR image'
+//                def doStuff = input(
+//                    message: 'Select target environment',
+//                    ok: 'Confirm',
+//                    parameters: [
+//                        choice(name: 'ENV', choices: ['Dev', 'Staging', 'Prod'], description: 'Where to deploy?')
+//                    ]
+//                )
+//
+//                echo "The chosen environment is: ${doStuff}"
+//
+//                }
+//            }
+//
+//
+//        }
+
+
+
         stage('Select ECR image') {
 
             steps{
                 script {
                 echo 'Selecting ECR image'
                 def doStuff = input(
-                    message: 'Select target environment',
+                    message: 'Enter your custom value',
                     ok: 'Confirm',
                     parameters: [
-                        choice(name: 'ENV', choices: ['Dev', 'Staging', 'Prod'], description: 'Where to deploy?')
+                        string(name: 'USER_INPUT', defaultValue '', description: 'Please type the value you want to use:')
                     ]
                 )
 
