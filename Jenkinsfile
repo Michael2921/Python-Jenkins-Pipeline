@@ -45,7 +45,7 @@ pipeline {
                     message: 'Enter your custom value',
                     ok: 'Confirm',
                     parameters: [
-                        string(name: 'USER_INPUT', defaultValue '', description: 'Please type the value you want to use:')
+                        string(name: 'USER_INPUT', defaultValue: '', description: 'Please type the value you want to use:')
                     ]
                 )
 
