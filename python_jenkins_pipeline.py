@@ -72,6 +72,7 @@ def deploy_image(image):
 
 
 for choice in tag_choices:
+    print(f"choice from choice list is {choice}, and selected image_choice is {image_choice}")
     if image_choice == choice:
         deploy_image(choice)
 
