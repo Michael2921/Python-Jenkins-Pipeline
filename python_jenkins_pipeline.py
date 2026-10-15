@@ -76,6 +76,8 @@ for choice in tag_choices:
     if image_choice == choice:
         deploy_image(choice)
 
+print("Hello world")
+
 
 
 
