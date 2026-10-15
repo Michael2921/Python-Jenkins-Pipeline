@@ -108,8 +108,8 @@ def deploy_image(image):
         for command in commands:
             if image_choice == str(tag):
                 result = command()
-                print(result.stdout)
-                print(result.stderr)
+               # print(result.stdout)
+               # print(result.stderr)
                 if result.returncode != 0:
                     print("Docker container failed to start")
 
