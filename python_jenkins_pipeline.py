@@ -88,9 +88,9 @@ def deploy_image(image):
         text=True
     )
 
-    command_list = [{1.0:[run_command_1]}, {2.0:[run_command_2]}, {3.0:[run_command_3]}]
+    command_list = {1.0:[run_command_1]}, {2.0:[run_command_2]}, {3.0:[run_command_3]}
 
-    for key, value in command_list:
+    for key, value in command_list.items():
         if key == image_choice:
             print(f"{key} is {value}")
             value
