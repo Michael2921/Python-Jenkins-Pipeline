@@ -2,6 +2,7 @@ import boto3
 import os
 import paramiko
 import subprocess
+from functools import partial
 
 
 ecr_client = boto3.client('ecr', region_name="us-east-1")
@@ -62,41 +63,46 @@ def deploy_image(image):
     print(ecr_login.stdout)
     print(ecr_login.stderr)
 
-    run_command_1 = subprocess.run(
-        ["docker", "run", "-p" "8080:80" "-d" f"{repo_name}:{image}"], # subprocess.run() waits for the command to finish running
+    run_command_1 = partial(
+        subprocess.run,
+        ["docker", "run", "-p", "8080:80", "-d", f"{repo_name}:{image}"], # subprocess.run() waits for the command to finish running
         capture_output=True,
-        text=True
+        text=True,
+        check=True
     )
 
-    print(run_command_1.stdout)
-    print(run_command_1.stderr)
 
-    run_command_2 = subprocess.run(
-        ["docker", "run", "-p" "8080:8080" "-d" f"{repo_name}:{image}"],
+
+    run_command_2 = partial(
+        subprocess.run,
+        ["docker", "run", "-p", "8080:8080", "-d", f"{repo_name}:{image}"],
         # subprocess.run() waits for the command to finish running
         capture_output=True,
-        text=True
+        text=True,
+        check=True
     )
 
-    print(run_command_2.stdout)
-    print(run_command_2.stderr)
 
-    run_command_3 = subprocess.run(
-        ["docker", "run", "-p" "8080:8080" "-d" f"{repo_name}:{image}"],
+
+    run_command_3 = partial(
+        subprocess.run,
+        ["docker", "run", "-p", "8080:8080", "-d", f"{repo_name}:{image}"],
         # subprocess.run() waits for the command to finish running
         capture_output=True,
-        text=True
+        text=True,
+        check=True
     )
 
-    command_list = {1.0:[run_command_1]}, {2.0:[run_command_2]}, {3.0:[run_command_3]}
+    command_list = {1.0:[run_command_1], 2.0:[run_command_2], 3.0:[run_command_3]}
 
-    for key, value in command_list.items():
-        if key == image_choice:
-            print(f"{key} is {value}")
-            value
+    for tag, commands in command_list.items():
+        for command in commands:
+            if image_choice == tag:
+                result = command()
+                print(result.stdout)
+                print(result.stderr)
 
-    print(run_command_3.stdout)
-    print(run_command_3.stderr)
+
 
 
     ssh.close()
