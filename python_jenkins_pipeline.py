@@ -101,6 +101,10 @@ def deploy_image(image):
                 result = command()
                 print(result.stdout)
                 print(result.stderr)
+            else:
+                print("Tag not found")
+                print(type(image_choice))
+                print(type(tag))
 
 
 
