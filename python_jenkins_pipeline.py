@@ -1,7 +1,6 @@
 import boto3
 import os
 import paramiko
-import subprocess
 from functools import partial
 
 
@@ -45,68 +44,76 @@ def ssh_access():
 
 image_choice = os.getenv("CHOICE_ENV")
 
-#access_key_id = os.getenv("AWS_ACCESS_KEY_ID") test to see if the defined variable in jenkins will work here
-#secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY")
+access_key_id = os.getenv("AWS_ACCESS_KEY_ID")
+secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY")
 repo_name  = "420392929933.dkr.ecr.us-east-1.amazonaws.com/python-app"
 
 def deploy_image(image):
 
     ssh = ssh_access()
 
-    stdin, stdout, stderr = ssh.exec_command(
-        "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 420392929933.dkr.ecr.us-east-1.amazonaws.com"
-    )
-
-    exit_code = stdout.channel.recv_exit_status()
-
-    print(stdout.read().decode())
-    print(stderr.read().decode())
-
-    if exit_code != 0:
-        raise RuntimeError("ECR login failed")
+    try:
 
 
-
-    run_command_2 = partial(
-        ssh.exec_command,
-        f"docker run -p 8080:8080 -d {repo_name}:{image}"
-    )
-
+        remote_command = (
+            f"export AWS_ACCESS_KEY_ID={access_key_id} && export AWS_SECRET_ACCESS_KEY={secret_access_key} && "
+            f"aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 420392929933.dkr.ecr.us-east-1.amazonaws.com"
+        )
 
 
+        stdin, stdout, stderr = ssh.exec_command(remote_command)
 
-    run_command_1 = partial(
-        ssh.exec_command,
-        f"docker run -p 8080:80 -d {repo_name}:{image}"
+        exit_code = stdout.channel.recv_exit_status()
 
-    )
+        print(stdout.read().decode())
+        print(stderr.read().decode())
 
-
-    run_command_3 = partial(
-        ssh.exec_command,
-        f"docker run -p 8080:8080 -d {repo_name}:{image}"
-
-    )
+        if exit_code != 0:
+            raise RuntimeError("ECR login failed")
 
 
 
-    command_list = {"1.0":[run_command_1], "2.0":[run_command_2], "3.0":[run_command_3]}
-
-    for tag, commands in command_list.items():
-        for command in commands:
-            if image_choice == tag:
-                stdin, stdout, stderr =  command()
-                exit_code = stdout.channel.recv_exit_status()
-                print(stdout.read().decode())
-                print(stderr.read().decode())
-                if exit_code != 0:
-                    print("Docker container failed to start")
-                else:
-                    print("Docker container started")
+        run_command_2 = partial(
+            ssh.exec_command,
+            f"docker run -p 8080:8080 -d {repo_name}:{image}"
+        )
 
 
 
-    ssh.close()
+
+        run_command_1 = partial(
+            ssh.exec_command,
+            f"docker run -p 8080:80 -d {repo_name}:{image}"
+
+        )
+
+
+        run_command_3 = partial(
+            ssh.exec_command,
+            f"docker run -p 8080:8080 -d {repo_name}:{image}"
+
+        )
+
+
+
+        command_list = {"1.0":[run_command_1], "2.0":[run_command_2], "3.0":[run_command_3]}
+
+        for tag, commands in command_list.items():
+            for command in commands:
+                if image_choice == tag:
+                    stdin, stdout, stderr =  command()
+                    exit_code = stdout.channel.recv_exit_status()
+                    print(stdout.read().decode())
+                    print(stderr.read().decode())
+                    if exit_code != 0:
+                        print("Docker container failed to start")
+                    else:
+                        print("Docker container started")
+
+
+
+    finally:
+        ssh.close()
 
 get_images()
 for choice in tag_choices:
