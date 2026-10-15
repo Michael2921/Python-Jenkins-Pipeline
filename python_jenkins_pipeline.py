@@ -90,6 +90,14 @@ def deploy_image(image):
         text=True,
     )
 
+    result = subprocess.run(
+        ["docker", "ps", "--filter", "publish=8080"],
+        capture_output=True,
+        text=True
+    )
+
+    print(result.stdout)
+
     command_list = {1.0:[run_command_1], 2.0:[run_command_2], 3.0:[run_command_3]}
 
     for tag, commands in command_list.items():
