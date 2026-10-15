@@ -22,6 +22,7 @@ pipeline {
 
             steps{
                 script {
+                echo 'Selecting ECR image'
                 sh 'python3 -m venv .venv && . .venv/bin/activate' // creates virtual environment
               //  sh '. .venv/bin/activate' // activates virutal environment
                 sh '.venv/bin/python3 -m pip install -r requirements.txt'
@@ -61,7 +62,9 @@ pipeline {
             steps {
                 script {
                         echo 'Deploying the application to EC2'
-                        sh "python3 ./python_jenkins_pipeline.py"
+                        sh 'python3 -m venv .venv && . .venv/bin/activate' // creates virtual environment
+                        sh '.venv/bin/python3 -m pip install -r requirements.txt'
+                        sh ".venv/bin/python3 ./python_jenkins_pipeline.py"
                 }
             }
         }
