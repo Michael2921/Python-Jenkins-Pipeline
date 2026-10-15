@@ -68,6 +68,13 @@ def deploy_image(image):
         f"docker run -p 8080:8080 -d {repo_name}:{image}"
     )
 
+    stdin, stdout, stderr = run_command_2()
+    stdout.channel.recv_exit_status()
+
+    print(stdout.read().decode())
+    print(stderr.read().decode())
+
+
     run_command_1 = partial(
         subprocess.run,
         ["docker", "run", "-p", "8080:80", "-d", f"{repo_name}:{image}"], # subprocess.run() waits for the command to finish running
