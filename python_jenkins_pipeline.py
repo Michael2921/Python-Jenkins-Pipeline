@@ -36,7 +36,7 @@ def ssh_access():
 
      ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-     ssh.connect(public_ipv4, username='ec2-user', key_filename='C:\\Users\\user\\.ssh\\id_rsa')
+     ssh.connect(public_ipv4, username='ec2-user', key_filename='/home/ec2-user/.ssh/id_rsa')
 
      return ssh
 
