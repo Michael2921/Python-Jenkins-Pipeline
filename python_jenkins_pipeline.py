@@ -53,65 +53,56 @@ def deploy_image(image):
 
     ssh = ssh_access()
 
-    ecr_login = subprocess.run(
-       "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 420392929933.dkr.ecr.us-east-1.amazonaws.com",
-        shell=True,
-        capture_output=True,
-        text=True
+    stdin, stdout, stderr = ssh.exec_command(
+        "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 420392929933.dkr.ecr.us-east-1.amazonaws.com"
     )
 
-    print(ecr_login.stdout)
-    print(ecr_login.stderr)
+    exit_code = stdout.channel.recv_exit_status()
+
+    print(stdout.read().decode())
+    print(stderr.read().decode())
+
+    if exit_code != 0:
+        raise RuntimeError("ECR login failed")
+
+
 
     run_command_2 = partial(
         ssh.exec_command,
         f"docker run -p 8080:8080 -d {repo_name}:{image}"
     )
 
-    stdin, stdout, stderr = run_command_2()
-    stdout.channel.recv_exit_status()
 
-    print(stdout.read().decode())
-    print(stderr.read().decode())
 
 
     run_command_1 = partial(
-        subprocess.run,
-        ["docker", "run", "-p", "8080:80", "-d", f"{repo_name}:{image}"], # subprocess.run() waits for the command to finish running
-        capture_output=True,
-        text=True,
+        ssh.exec_command,
+        f"docker run -p 8080:80 -d {repo_name}:{image}"
+
     )
-
-
-
 
 
     run_command_3 = partial(
-        subprocess.run,
-        ["docker", "run", "-p", "8080:8080", "-d", f"{repo_name}:{image}"],
-        # subprocess.run() waits for the command to finish running
-        capture_output=True,
-        text=True,
+        ssh.exec_command,
+        f"docker run -p 8080:8080 -d {repo_name}:{image}"
+
     )
 
-    result = subprocess.run(
-        ["whoami"],
-        capture_output=True,
-        text=True
-    )
 
-    print(result.stdout)
 
-    command_list = {1.0:[run_command_1], 2.0:[run_command_2], 3.0:[run_command_3]}
+    command_list = {"1.0":[run_command_1], "2.0":[run_command_2], "3.0":[run_command_3]}
 
     for tag, commands in command_list.items():
         for command in commands:
-            if image_choice == str(tag):
-                result = command()
-               # print(result.stdout)
-               # print(result.stderr)
-                if result.returncode != 0:
+            if image_choice == tag:
+                stdin, stdout, stderr =  command()
+                exit_code = stdout.channel.recv_exit_status()
+                print(stdout.read().decode())
+                print(stderr.read().decode())
+                if exit_code != 0:
                     print("Docker container failed to start")
+                else:
+                    print("Docker container started")
 
 
 
