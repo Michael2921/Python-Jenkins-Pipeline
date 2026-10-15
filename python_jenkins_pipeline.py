@@ -60,14 +60,16 @@ def deploy_image(image):
     )
 
     print(ecr_login.stdout)
+    print(ecr_login.stderr)
 
     run_command = subprocess.run(
-        f"docker run {repo_name}:{image}", # subprocess.run() waits for the command to finish running
+        ["docker", "run", f"{repo_name}:{image}"], # subprocess.run() waits for the command to finish running
         capture_output=True,
         text=True
     )
 
     print(run_command.stdout)
+    print(run_command.stderr)
 
 
     ssh.close()
