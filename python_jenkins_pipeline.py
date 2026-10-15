@@ -97,7 +97,7 @@ def deploy_image(image):
 
     for tag, commands in command_list.items():
         for command in commands:
-            if image_choice == tag:
+            if image_choice == str(tag):
                 result = command()
                 print(result.stdout)
                 print(result.stderr)
