@@ -91,7 +91,7 @@ def deploy_image(image):
     )
 
     result = subprocess.run(
-        ["docker", "ps", "--filter", "publish=8080"],
+        ["whoami"],
         capture_output=True,
         text=True
     )
