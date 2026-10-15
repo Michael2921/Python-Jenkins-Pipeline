@@ -30,13 +30,13 @@ def get_images():
 
 def ssh_access():
 
-     public_ipv4 = "100.53.51.251"
+     public_ipv4 = '100.53.51.251'
 
      ssh = paramiko.SSHClient()
 
      ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-     ssh.connect(public_ipv4, username='ec2-user', key_filename='/var/jenkins_home/.ssh/id_rsa')
+     ssh.connect('100.53.51.251', username='ec2-user', key_filename='/var/jenkins_home/.ssh/id_rsa')
 
      return ssh
 
