@@ -27,8 +27,6 @@ def get_images():
 
     return tag_choices
 
-print(tag_choices)
-
 
 def ssh_access():
 
@@ -44,6 +42,7 @@ def ssh_access():
 
 
 image_choice = os.getenv("CHOICE_ENV")
+print(image_choice)
 #access_key_id = os.getenv("AWS_ACCESS_KEY_ID") test to see if the defined variable in jenkins will work here
 #secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY")
 repo_name  = "420392929933.dkr.ecr.us-east-1.amazonaws.com/python-app"
@@ -74,11 +73,9 @@ def deploy_image(image):
 
 
 for choice in tag_choices:
-    print(f"choice from choice list is {choice}, and selected image_choice is {image_choice}")
     if image_choice == choice:
         deploy_image(choice)
 
-print(tag_choices)
 
 
 

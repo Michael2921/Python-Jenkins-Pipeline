@@ -63,7 +63,9 @@ pipeline {
                         echo 'Deploying the application to EC2'
                         sh 'python3 -m venv .venv' // creates virtual environment
                         sh '.venv/bin/python3 -m pip install -r requirements.txt'
-                        sh ".venv/bin/python3 python_jenkins_pipeline.py"
+                        sh '.venv/bin/python3 python_jenkins_pipeline.py'
+                        echo 'CHOICE_ENV: ${env.CHOICE_ENV}'
+
                 }
             }
         }
