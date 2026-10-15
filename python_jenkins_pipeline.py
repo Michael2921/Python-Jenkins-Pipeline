@@ -63,6 +63,11 @@ def deploy_image(image):
     print(ecr_login.stdout)
     print(ecr_login.stderr)
 
+    run_command_2 = partial(
+        ssh.exec_command,
+        f"docker run -p 8080:8080 -d {repo_name}:{image}"
+    )
+
     run_command_1 = partial(
         subprocess.run,
         ["docker", "run", "-p", "8080:80", "-d", f"{repo_name}:{image}"], # subprocess.run() waits for the command to finish running
@@ -71,14 +76,6 @@ def deploy_image(image):
     )
 
 
-
-    run_command_2 = partial(
-        subprocess.run,
-        ["docker", "run", "-p", "8080:8080", "-d", f"{repo_name}:{image}"],
-        # subprocess.run() waits for the command to finish running
-        capture_output=True,
-        text=True,
-    )
 
 
 
