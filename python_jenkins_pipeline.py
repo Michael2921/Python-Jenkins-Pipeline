@@ -72,7 +72,6 @@ def deploy_image(image):
     ssh.close()
 
 get_images()
-print(tag_choices)
 for choice in tag_choices:
     if image_choice == choice:
         deploy_image(choice)
