@@ -68,7 +68,6 @@ def deploy_image(image):
         ["docker", "run", "-p", "8080:80", "-d", f"{repo_name}:{image}"], # subprocess.run() waits for the command to finish running
         capture_output=True,
         text=True,
-        check=True
     )
 
 
@@ -79,7 +78,6 @@ def deploy_image(image):
         # subprocess.run() waits for the command to finish running
         capture_output=True,
         text=True,
-        check=True
     )
 
 
@@ -90,7 +88,6 @@ def deploy_image(image):
         # subprocess.run() waits for the command to finish running
         capture_output=True,
         text=True,
-        check=True
     )
 
     command_list = {1.0:[run_command_1], 2.0:[run_command_2], 3.0:[run_command_3]}
@@ -101,11 +98,8 @@ def deploy_image(image):
                 result = command()
                 print(result.stdout)
                 print(result.stderr)
-            else:
-                print("Tag not found")
-                print(type(image_choice))
-                print(type(tag))
-
+                if result.returncode != 0:
+                    print("Docker container failed to start")
 
 
 
