@@ -27,6 +27,8 @@ def get_images():
 
     return tag_choices
 
+print(tag_choices)
+
 
 def ssh_access():
 
@@ -76,7 +78,6 @@ for choice in tag_choices:
     if image_choice == choice:
         deploy_image(choice)
 
-print(image_choice)
 print(tag_choices)
 
 
