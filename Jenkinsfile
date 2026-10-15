@@ -23,8 +23,7 @@ pipeline {
             steps{
                 script {
                 echo 'Selecting ECR image'
-                sh 'python3 -m venv .venv && . .venv/bin/activate' // creates virtual environment
-              //  sh '. .venv/bin/activate' // activates virutal environment
+                sh 'python3 -m venv .venv' // creates virtual environment
                 sh '.venv/bin/python3 -m pip install -r requirements.txt'
                 def output = sh(
                 script: ".venv/bin/python3 -c 'import python_jenkins_pipeline; print(\"\\n\".join(python_jenkins_pipeline.get_images()))'", // .join converts python list to a string with a newline between each string
@@ -62,9 +61,9 @@ pipeline {
             steps {
                 script {
                         echo 'Deploying the application to EC2'
-                        sh 'python3 -m venv .venv && . .venv/bin/activate' // creates virtual environment
+                        sh 'python3 -m venv .venv' // creates virtual environment
                         sh '.venv/bin/python3 -m pip install -r requirements.txt'
-                        sh ".venv/bin/python3 ./python_jenkins_pipeline.py"
+                        sh ".venv/bin/python3 python_jenkins_pipeline.py"
                 }
             }
         }
