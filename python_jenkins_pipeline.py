@@ -36,9 +36,8 @@ def ssh_access():
 
      ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-     ssh.connect('100.53.51.251', username='ec2-user', key_filename='/var/jenkins_home/.ssh/id_rsa')
+     ssh.connect(public_ipv4, username='ec2-user', key_filename='/var/jenkins_home/.ssh/id_rsa')
 
-     os.system('cat /var/jenkins_home/.ssh/id_rsa')
 
      return ssh
 
