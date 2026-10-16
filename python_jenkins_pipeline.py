@@ -8,9 +8,9 @@ ecr_client = boto3.client('ecr', region_name="us-east-1")
 
 repositories = ecr_client.describe_repositories()
 
-
-
 tag_list = ecr_client.describe_images(repositoryName="python-app")
+
+public_ipv4 = '100.53.51.251'
 
 
 
@@ -31,8 +31,6 @@ def get_images():
 
 
 def ssh_access():
-
-     public_ipv4 = '100.53.51.251'
 
      ssh = paramiko.SSHClient()
 
@@ -111,6 +109,8 @@ def deploy_image(image):
                         print("Docker container failed to start")
                     else:
                         print("Docker container started")
+                        stdin, stdout, stderr = ssh.exec_command('docker ps')
+                        print(stdout.read().decode())
 
 
 
