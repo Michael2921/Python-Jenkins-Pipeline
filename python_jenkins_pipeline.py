@@ -118,7 +118,7 @@ def deploy_image(image):
         ssh.close()
 
 get_images()
-for choice in get_images().tag_choices:
+for choice in get_images():
     if image_choice == choice:
         deploy_image(choice)
 
