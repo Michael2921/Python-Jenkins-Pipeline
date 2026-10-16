@@ -54,7 +54,6 @@ pipeline {
 
 
 
-
         stage('Deploying image to EC2 instance') {
             environment {
                 AWS_ACCESS_KEY_ID = credentials('jenkins_aws_access_key_id')
@@ -63,7 +62,7 @@ pipeline {
             steps {
                 script {
                         echo 'Deploying the application to EC2'
-                        sh 'python3 -m venv .venv' // creates virtual environment
+                        sh 'python3 -m venv .venv'
                         sh '.venv/bin/python3 -m pip install -r requirements.txt'
                         sh '.venv/bin/python3 python_jenkins_pipeline.py'
 
