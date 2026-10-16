@@ -12,11 +12,13 @@ repositories = ecr_client.describe_repositories()
 
 tag_list = ecr_client.describe_images(repositoryName="python-app")
 
-tag_choices = []
+
 
 
 
 def get_images():
+
+    tag_choices = []
 
     for tag in tag_list['imageDetails']:
         try:
@@ -25,7 +27,7 @@ def get_images():
         except KeyError:
             continue
 
-   # return tag_choices
+    return tag_choices
 
 
 def ssh_access():
@@ -116,7 +118,7 @@ def deploy_image(image):
         ssh.close()
 
 get_images()
-for choice in tag_choices:
+for choice in get_images().tag_choices:
     if image_choice == choice:
         deploy_image(choice)
 
