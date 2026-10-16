@@ -25,7 +25,7 @@ def get_images():
         except KeyError:
             continue
 
-    return tag_choices
+   # return tag_choices
 
 
 def ssh_access():
