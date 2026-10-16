@@ -118,7 +118,6 @@ def deploy_image(image):
 get_images()
 for choice in tag_choices:
     if image_choice == choice:
-        print(f"image choice is {image_choice}, so will be deploying {choice}")
         deploy_image(choice)
 
 

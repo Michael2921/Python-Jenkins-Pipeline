@@ -31,7 +31,7 @@ pipeline {
                 ).trim()
 
 
-                def imageChoices = output.readLines() // converts string to list
+               // def imageChoices = output.readLines() // converts string to list
 
 
                 echo 'Selecting ECR image'
